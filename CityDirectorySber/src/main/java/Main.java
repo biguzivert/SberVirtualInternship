@@ -4,10 +4,15 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
+        //Реализация сортировки по имени и по имени и федеральному округу:
+        Comparator<City> byName = (City c1, City c2) -> c1.getName().compareTo(c2.getName());
+        Comparator<City> byNameAndDistrict = Comparator.comparing(City::getDistrict).thenComparing((City::getName));
+
         String filePath = "src/main/resources/data.csv";
         Path path = Paths.get(filePath);
         ArrayList<City> cities = new ArrayList<>();
@@ -32,6 +37,7 @@ public class Main {
             System.out.print("problematic line: ");
             System.out.println(citiesSize - 1);
         }
+        cities.sort(byNameAndDistrict);
         cities.forEach(System.out::println);
     }
 }
