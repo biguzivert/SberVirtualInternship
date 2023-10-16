@@ -3,10 +3,7 @@ import model.City;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Scanner;
+import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
@@ -23,6 +20,9 @@ public class Main {
             scanner.useDelimiter("\r\n");
             while(scanner.hasNext()){
                 String[] cityInfo = scanner.next().split(";");
+                if(cityInfo.length !=6){
+                    continue;
+                }
                 String name = cityInfo[1];
                 String region = cityInfo[2];
                 String district = cityInfo[3];
@@ -38,7 +38,9 @@ public class Main {
             System.out.print("problematic line: ");
             System.out.println(citiesSize - 1);
         }
-        System.out.println(mostPopulousCity(cities));
+        HashMap<String, Integer> sortedByRegion = sortedByRegion(cities);
+        Set<String> regions = sortedByRegion.keySet();
+        regions.forEach(r -> System.out.println(r + " - " + sortedByRegion.get(r)));
     }
 
     public static String mostPopulousCity(ArrayList<City> cities){
@@ -48,4 +50,17 @@ public class Main {
         City[] citiesArray = cities.toArray(new City[0]);
         return "[" + (citiesArray.length - 1) + "] = " + population;
     }
+
+    public static HashMap<String, Integer> sortedByRegion(ArrayList<City> cities){
+        HashMap<String, Integer> sortedCities = new HashMap<>();
+        cities.forEach(c -> {
+            if(sortedCities.containsKey(c.getRegion())){
+                sortedCities.put(c.getRegion(), sortedCities.get(c.getRegion()) + 1);
+            } else {
+                sortedCities.put(c.getRegion(), 1);
+            }
+        });
+        return sortedCities;
+    }
+
 }
