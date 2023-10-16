@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Scanner;
 
@@ -37,7 +38,14 @@ public class Main {
             System.out.print("problematic line: ");
             System.out.println(citiesSize - 1);
         }
-        cities.sort(byNameAndDistrict);
-        cities.forEach(System.out::println);
+        System.out.println(mostPopulousCity(cities));
+    }
+
+    public static String mostPopulousCity(ArrayList<City> cities){
+        Comparator<City> byPopulation = Comparator.comparing(City::getPopulation);
+        cities.sort(byPopulation);
+        int population = cities.get(cities.size() - 1).getPopulation();
+        City[] citiesArray = cities.toArray(new City[0]);
+        return "[" + (citiesArray.length - 1) + "] = " + population;
     }
 }
